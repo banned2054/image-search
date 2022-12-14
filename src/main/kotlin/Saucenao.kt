@@ -268,31 +268,38 @@ class Saucenao
         for (item in items)
         {
             val thumbnail = item.header?.thumbnail!!
-            var url = ""
-            if (item.data?.source != null)
-            {
-                if (item.data!!.source != "")
-                {
-                    url = item.data!!.source!!
-                }
-            }
-            else
-            {
-                if (item.data?.ext_urls != null)
-                {
-                    if (item.data!!.ext_urls?.size!! > 0)
-                    {
-                        url = item.data!!.ext_urls?.get(0)!!
-                    }
-                }
-                else
-                {
-                    continue
-                }
-            }
+            val url = getUrl(item)
+            if (url == "" || thumbnail == "") continue
             val newRaw = SaucenaoResult.SaucenaoRaw(url, thumbnail)
             ans.items.add(newRaw)
         }
         return ans
+    }
+    
+    private fun getUrl(item : SaucenaoResponse.SaucenaoItem) : String
+    {
+        if (item.data!!.pixiv_id != "")
+        {
+            return "https://www.pixiv.net/artworks/" + item.data!!.pixiv_id.toString()
+        }
+        if (item.data!!.pawoo_user_acct != "")
+        {
+            if (item.data!!.pawoo_id != "")
+            {
+                return "https://pawoo.net/@" + item.data!!.pawoo_user_acct + "/" + item.data!!.pawoo_id
+            }
+        }
+        if (item.data!!.getchu_id != "")
+        {
+            return "https://www.getchu.com/soft.phtml?id=" + item.data!!.getchu_id
+        }
+        if (item.data!!.ext_urls != null)
+        {
+            if (item.data!!.ext_urls!!.isNotEmpty())
+            {
+                return item.data!!.ext_urls!![0]
+            }
+        }
+        return ""
     }
 }

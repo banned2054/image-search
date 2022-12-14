@@ -29,16 +29,36 @@ class SaucenaoResponse
     
     class SaucenaoItemData
     {
-        var ext_urls : List<String>? = null
         var danbooru_id : Int? = null
         var gelbooru_id : Int? = null
-        var creator : Any? = null
-        var material : String? = null
         var characters : String? = null
-        var source : String? = null
-        var pixiv_data : String? = null
-        var member_name : String? = null
         var member_id : Int? = null
+    
+        //标题
         var title : String? = null
+        var material : String? = null
+        var jp_name : String? = null
+        var eng_name : String? = null
+        var source : String? = null
+        var created_at : String? = null
+    
+        //url
+        var pixiv_id : String? = null
+        var pawoo_user_acct : String? = null
+        var pawoo_id : String? = null
+        var getchu_id : String? = null
+        var ext_urls : List<String>? = null
+    
+        //author
+        var creator : String? = null
+        var author : String? = null
+        var member_name : String? = null
+        var twitter_user_handle : String? = null
+        var pawoo_user_display_name : String? = null
+        var author_name : String? = null
+        var user_name : String? = null
+        var artist : String? = null
+        var company : String? = null
+    
     }
 }
