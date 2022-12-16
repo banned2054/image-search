@@ -23,16 +23,14 @@ class SaucenaoResponse
         var thumbnail : String? = null
         var index_id : Int? = null
         var index_name : String? = null
-        var dupes : Int? = null
-        var hidden : Int? = null
     }
     
     class SaucenaoItemData
     {
-        var danbooru_id : Int? = null
-        var gelbooru_id : Int? = null
-        var characters : String? = null
-        var member_id : Int? = null
+        var seiga_id : String? = null
+        var nijie_id : String? = null
+        var bcy_id : String? = null
+        var tweet_id : String? = null
     
         //标题
         var title : String? = null
@@ -60,5 +58,9 @@ class SaucenaoResponse
         var artist : String? = null
         var company : String? = null
     
+        //author url
+        val member_id : String? = null
+        var twitter_user_id : String? = null
+        var author_url : String? = null
     }
 }

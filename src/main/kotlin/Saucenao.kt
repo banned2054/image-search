@@ -1,3 +1,4 @@
+import com.google.gson.Gson
 import okhttp3.*
 import retrofit2.*
 import retrofit2.Call
@@ -269,8 +270,21 @@ class Saucenao
         {
             val thumbnail = item.header?.thumbnail!!
             val url = getUrl(item)
+            if (item.header == null || item.data == null) continue
             if (url == "" || thumbnail == "") continue
-            val newRaw = SaucenaoResult.SaucenaoRaw(url, thumbnail)
+            val newRaw = SaucenaoResult.SaucenaoRaw(
+                    Gson().toJson(item),
+                    item.header!!.similarity,
+                    item.header!!.thumbnail,
+                    item.header!!.index_id,
+                    item.header!!.index_name,
+                    getTitle(item),
+                    getUrl(item),
+                    item.data!!.ext_urls,
+                    getAuthor(item),
+                    getAuthorUrl(item),
+                    item.data!!.source
+                                                   )
             ans.items.add(newRaw)
         }
         return ans
@@ -278,18 +292,18 @@ class Saucenao
     
     private fun getUrl(item : SaucenaoResponse.SaucenaoItem) : String
     {
-        if (item.data!!.pixiv_id != "")
+        if (item.data!!.pixiv_id != null) if (item.data!!.pixiv_id != "")
         {
             return "https://www.pixiv.net/artworks/" + item.data!!.pixiv_id.toString()
         }
-        if (item.data!!.pawoo_user_acct != "")
+        if (item.data!!.pawoo_user_acct != null) if (item.data!!.pawoo_user_acct != "")
         {
             if (item.data!!.pawoo_id != "")
             {
                 return "https://pawoo.net/@" + item.data!!.pawoo_user_acct + "/" + item.data!!.pawoo_id
             }
         }
-        if (item.data!!.getchu_id != "")
+        if (item.data!!.getchu_id != null) if (item.data!!.getchu_id != "")
         {
             return "https://www.getchu.com/soft.phtml?id=" + item.data!!.getchu_id
         }
@@ -300,6 +314,104 @@ class Saucenao
                 return item.data!!.ext_urls!![0]
             }
         }
+        return ""
+    }
+    
+    private fun getAuthorUrl(item : SaucenaoResponse.SaucenaoItem) : String
+    {
+        if (item.data!!.pixiv_id != null) if (item.data!!.member_id != "")
+        {
+            return "https://www.pixiv.net/user/" + item.data!!.member_id.toString()
+        }
+        if (item.data!!.seiga_id != null) if (item.data!!.member_id != "")
+        {
+            return "https://seiga.nicovideo.jp/user/illust/" + item.data!!.member_id.toString()
+        }
+        if (item.data!!.nijie_id != null) if (item.data!!.member_id != "")
+        {
+            return "https://nijie.info/members.php?id=" + item.data!!.member_id
+        }
+        if (item.data!!.bcy_id != null) if (item.data!!.member_id != "")
+        {
+            return "https://bcy.net/u/" + item.data!!.member_id
+        }
+        if (item.data!!.tweet_id != null) if (item.data!!.twitter_user_id != "")
+        {
+            return "https://twitter.com/intent/user?user_id=" + item.data!!.twitter_user_id
+        }
+        if (item.data!!.pawoo_user_acct != null) if (item.data!!.pawoo_user_acct != "")
+        {
+            return "https://pawoo.net/@" + item.data!!.pawoo_user_acct
+        }
+        if (item.data!!.author_url != null) if (item.data!!.author_url != "")
+        {
+            return item.data!!.author_url!!
+        }
+        return ""
+    }
+    
+    private fun getTitle(item : SaucenaoResponse.SaucenaoItem) : String
+    {
+        if (item.data!!.title != null)
+        {
+            if (item.data!!.title != "")
+            {
+                return item.data!!.title!!
+            }
+        }
+        if (item.data!!.material != null)
+        {
+            if (item.data!!.material != "")
+            {
+                return item.data!!.material!!
+            }
+        }
+        
+        if (item.data!!.jp_name != null)
+        {
+            if (item.data!!.jp_name != "")
+            {
+                return item.data!!.jp_name!!
+            }
+        }
+        
+        if (item.data!!.eng_name != null)
+        {
+            if (item.data!!.eng_name != "")
+            {
+                return item.data!!.eng_name!!
+            }
+        }
+        
+        
+        if (item.data!!.source != null)
+        {
+            if (item.data!!.source != "")
+            {
+                return item.data!!.source!!
+            }
+        }
+        if (item.data!!.created_at != null)
+        {
+            if (item.data!!.created_at != "")
+            {
+                return item.data!!.created_at!!
+            }
+        }
+        return ""
+    }
+    
+    private fun getAuthor(item : SaucenaoResponse.SaucenaoItem) : String
+    {
+        if (item.data!!.creator != null) if (item.data!!.creator != "") return item.data!!.creator!!
+        if (item.data!!.author != null) if (item.data!!.author != "") return item.data!!.author!!
+        if (item.data!!.member_name != null) if (item.data!!.member_name != "") return item.data!!.member_name!!
+        if (item.data!!.twitter_user_handle != null) if (item.data!!.twitter_user_handle != "") return item.data!!.twitter_user_handle!!
+        if (item.data!!.pawoo_user_display_name != null) if (item.data!!.pawoo_user_display_name != "") return item.data!!.pawoo_user_display_name!!
+        if (item.data!!.author_name != null) if (item.data!!.author_name != "") return item.data!!.author_name!!
+        if (item.data!!.user_name != null) if (item.data!!.user_name != "") return item.data!!.user_name!!
+        if (item.data!!.artist != null) if (item.data!!.artist != "") return item.data!!.artist!!
+        if (item.data!!.company != null) if (item.data!!.company != "") return item.data!!.company!!
         return ""
     }
 }
