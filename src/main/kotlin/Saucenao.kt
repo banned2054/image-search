@@ -7,8 +7,8 @@ import retrofit2.Response
 import retrofit2.converter.gson.GsonConverterFactory
 import saucenao.SaucenaoResponse
 import saucenao.SaucenaoResult
-import searchInterface.SaucenaoInterface
-import searchInterface.makePart
+import saucenao.SaucenaoInterface
+import saucenao.searchInterface.makePart
 import java.io.File
 import java.io.IOException
 import java.net.InetSocketAddress

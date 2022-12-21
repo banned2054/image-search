@@ -1,4 +1,4 @@
-package searchInterface
+package saucenao
 
 import okhttp3.MultipartBody
 import retrofit2.Call

@@ -1,4 +1,4 @@
-package searchInterface
+package saucenao.searchInterface
 
 import okhttp3.MediaType
 import okhttp3.MultipartBody
