@@ -4,7 +4,7 @@ plugins {
     `maven-publish`
 }
 
-group = "top.banned"
+group = "top.banned.library"
 
 
 repositories {
@@ -29,7 +29,7 @@ dependencies {
 publishing {
     publications {
         create<MavenPublication>("maven") {
-            groupId = "top.banned"
+            groupId = "top.banned.library"
             artifactId = "image-search"
             version = "0.1.0"
             
