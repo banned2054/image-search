@@ -2,10 +2,11 @@ plugins {
     kotlin("jvm") version "1.7.21"
     application
     `maven-publish`
+    signing
 }
 
 group = "top.banned.library"
-
+version = "0.1.0"
 
 repositories {
     maven { setUrl("https://maven.aliyun.com/repository/central") }
@@ -26,14 +27,8 @@ dependencies {
     implementation("com.squareup.retrofit2:adapter-rxjava:2.9.0")
     implementation("javax.xml.bind:jaxb-api:2.4.0-b180830.0359")
 }
+
+
 publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            groupId = "top.banned.library"
-            artifactId = "image-search"
-            version = "0.1.0"
-            
-            from(components["kotlin"])
-        }
-    }
+
 }
