@@ -1,10 +1,10 @@
 plugins {
     kotlin("jvm") version "1.7.21"
     application
+    `maven-publish`
 }
 
-group = "banned.library"
-version = "1.0-SNAPSHOT"
+group = "top.banned"
 
 
 repositories {
@@ -25,4 +25,15 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10")
     implementation("com.squareup.retrofit2:adapter-rxjava:2.9.0")
     implementation("javax.xml.bind:jaxb-api:2.4.0-b180830.0359")
+}
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "top.banned"
+            artifactId = "image-search"
+            version = "0.1.0"
+            
+            from(components["kotlin"])
+        }
+    }
 }
