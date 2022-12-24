@@ -1,4 +1,4 @@
-package saucenao
+package top.banned.library.imagesearch.saucenao
 
 class SaucenaoResponse
 {
@@ -31,7 +31,7 @@ class SaucenaoResponse
         var nijie_id : String? = null
         var bcy_id : String? = null
         var tweet_id : String? = null
-    
+        
         //标题
         var title : String? = null
         var material : String? = null
@@ -39,14 +39,14 @@ class SaucenaoResponse
         var eng_name : String? = null
         var source : String? = null
         var created_at : String? = null
-    
+        
         //url
         var pixiv_id : String? = null
         var pawoo_user_acct : String? = null
         var pawoo_id : String? = null
         var getchu_id : String? = null
         var ext_urls : List<String>? = null
-    
+        
         //author
         var creator : String? = null
         var author : String? = null
@@ -57,7 +57,7 @@ class SaucenaoResponse
         var user_name : String? = null
         var artist : String? = null
         var company : String? = null
-    
+        
         //author url
         val member_id : String? = null
         var twitter_user_id : String? = null

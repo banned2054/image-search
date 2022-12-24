@@ -1,4 +1,4 @@
-package saucenao
+package top.banned.library.imagesearch.saucenao
 
 class SaucenaoResult
 {
@@ -13,9 +13,6 @@ class SaucenaoResult
                                   var author : String?,
                                   var author_url : String?,
                                   var source : String?)
-    {
-    
-    }
     
     var items = mutableListOf<SaucenaoRaw>()
 }

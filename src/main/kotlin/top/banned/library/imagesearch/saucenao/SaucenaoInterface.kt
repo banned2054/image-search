@@ -1,9 +1,8 @@
-package saucenao
+package top.banned.library.imagesearch.saucenao
 
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
-import saucenao.SaucenaoResponse
 
 
 interface SaucenaoInterface

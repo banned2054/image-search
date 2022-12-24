@@ -1,3 +1,5 @@
+package top.banned.library.imagesearch
+
 import com.google.gson.Gson
 import okhttp3.*
 import retrofit2.*
@@ -5,10 +7,10 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.converter.gson.GsonConverterFactory
-import saucenao.SaucenaoResponse
-import saucenao.SaucenaoResult
-import saucenao.SaucenaoInterface
-import saucenao.searchInterface.makePart
+import top.banned.library.imagesearch.saucenao.SaucenaoInterface
+import top.banned.library.imagesearch.saucenao.SaucenaoResponse
+import top.banned.library.imagesearch.saucenao.SaucenaoResult
+import top.banned.library.imagesearch.util.makePart
 import java.io.File
 import java.io.IOException
 import java.net.InetSocketAddress
@@ -90,7 +92,7 @@ class Saucenao
     /**
      * 添加代理，saucenao被墙了
      */
-    public fun addProxy(url : String, port : Int) : Saucenao
+    fun addProxy(url : String, port : Int) : Saucenao
     {
         _useProxy = true
         _proxyUrl = url
@@ -101,7 +103,7 @@ class Saucenao
     /**
      * 设置api key，不然无法使用
      */
-    public fun setApiKey(apiKey : String) : Saucenao
+    fun setApiKey(apiKey : String) : Saucenao
     {
         _apiKey = apiKey
         return this
@@ -110,18 +112,33 @@ class Saucenao
     /**
      * 设置最小相似度,默认为30
      */
-    public fun setMinsim(minsim : Int) : Saucenao
+    fun setMinsim(minsim : Int) : Saucenao
     {
         _minSim = minsim
         return this
     }
     
+    @JvmField
+    val OUTPUT_TYPE_HTML = 0
+    
+    @JvmField
+    val OUTPUT_TYPE_XML = 1
+    
+    
+    @JvmField
+    val OUTPUT_TYPE_JSON = 2
+    
     /**
-     * 输出格式，默认为2，输出格式如下
+     * 输出格式，默认为[OUTPUT_TYPE_JSON]，
      *
-     * 0:html 1:xml 2:json
+     * 输出格式可以为：
+     * - [OUTPUT_TYPE_HTML]
+     *
+     * - [OUTPUT_TYPE_XML]
+     *
+     * - [OUTPUT_TYPE_JSON]
      */
-    public fun setOutputType(outputType : Int) : Saucenao
+    fun setOutputType(outputType : Int) : Saucenao
     {
         _outputType = outputType
         return this
@@ -130,7 +147,7 @@ class Saucenao
     /**
      * 数据库，默认为999（所有数据库）
      */
-    public fun setDB(db : Int) : Saucenao
+    fun setDB(db : Int) : Saucenao
     {
         _db = db
         return this
@@ -139,16 +156,17 @@ class Saucenao
     /**
      * 输出结果个数，默认为5
      */
-    public fun setNumRes(numRes : Int) : Saucenao
+    fun setNumRes(numRes : Int) : Saucenao
     {
         _numRes = numRes
         return this
     }
     
+    
     @Throws(IOException::class)
-    public fun search(url : String) : SaucenaoResult?
+    fun search(url : String) : SaucenaoResult?
     {
-        val ansFuture = CompletableFuture<SaucenaoResult>();
+        val ansFuture = CompletableFuture<SaucenaoResult>()
         if (_apiKey == "")
         {
             throw IOException("缺少api key")
@@ -205,9 +223,9 @@ class Saucenao
     }
     
     @Throws(IOException::class)
-    public fun search(file : File) : SaucenaoResult
+    fun search(file : File) : SaucenaoResult
     {
-        val ansFuture = CompletableFuture<SaucenaoResult>();
+        val ansFuture = CompletableFuture<SaucenaoResult>()
         if (_apiKey == "")
         {
             throw IOException("缺少api key")
