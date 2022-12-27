@@ -75,6 +75,6 @@ publishing {
         }
     }
     signing {
-        sign("publishing.publications.mavenJava")
+        var keyId = System.getenv("KeyId")
     }
 }
