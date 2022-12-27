@@ -19,8 +19,3 @@ jobs:
         uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
         with:
           arguments: build
-      - name: Configure GPG
-        uses: webfactory/gpg-action@v1
-        with:
-          key-name: ${{ secrets.KEY_NAME }}
-          secret-key-file: ${{ secrets.KEY_FILE }}
