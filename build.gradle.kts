@@ -75,6 +75,6 @@ publishing {
         }
     }
     signing {
-        var keyId = System.getenv("KeyId")
+        var keyId = System.getenv("SIGNING_KEY_ID")
     }
 }
