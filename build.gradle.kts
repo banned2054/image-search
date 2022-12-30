@@ -47,8 +47,7 @@ publishing {
             version = "1.0"
             
             from(components["kotlin"])
-        }
-        create<MavenPublication>("mavenJava") {
+    
             pom {
                 name.set("image-search")
                 description.set("a tool you can search image by saucenao or other search engine")
