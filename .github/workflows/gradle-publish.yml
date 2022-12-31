@@ -1,11 +1,15 @@
-name: Kotlin CI
+name: Publish package to the Maven Central Repository
 
-on: [push]
+on:
+  release:
+    types: [ created ]
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: read
+      packages: write
     steps:
       - uses: actions/checkout@v3
       - name: Run chmod to make gradlew executable
@@ -24,4 +28,6 @@ jobs:
         env:
           MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+          GITHUB_ACTOR: ${{ secrets.ACTOR }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
 

@@ -39,6 +39,14 @@ publishing {
                 password = System.getenv("MAVEN_PASSWORD")
             }
         }
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/banned2054/image-search")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
     }
     publications {
         create<MavenPublication>("maven") {
