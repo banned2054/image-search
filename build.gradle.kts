@@ -23,9 +23,10 @@ repositories {
 dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("com.google.code.gson:gson:2.10")
+    implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.squareup.retrofit2:adapter-rxjava:2.9.0")
     implementation("javax.xml.bind:jaxb-api:2.4.0-b180830.0359")
+    implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
 }
 
 

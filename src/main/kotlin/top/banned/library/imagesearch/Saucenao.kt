@@ -162,30 +162,16 @@ class Saucenao
         return this
     }
     
-    
     @Throws(IOException::class)
-    fun search(url : String) : SaucenaoResult?
+    fun search(url : String) : Any
     {
-        val ansFuture = CompletableFuture<SaucenaoResult>()
         if (_apiKey == "")
         {
             throw IOException("缺少api key")
         }
-        var retrofit = Retrofit.Builder()
-            .baseUrl("https://saucenao.com")
-            .addConverterFactory(GsonConverterFactory.create()) //设置数据解析器
-        if (_useProxy)
-        {
-            val proxy = Proxy(Proxy.Type.HTTP, InetSocketAddress(_proxyUrl, _port))
-            val client : OkHttpClient = OkHttpClient.Builder()
-                .proxy(proxy)
-                .build()
-            retrofit = retrofit.client(client)
-        }
-        
-        val request = retrofit.build()
-            .create(SaucenaoInterface::class.java)
-        
+    
+        val request = getRequest()
+    
         val call = request.saucenaoSearchWithURl(
                 makePart("testmode", _testMode),
                 makePart("numres", _numRes),
@@ -196,55 +182,30 @@ class Saucenao
                 makePart("api_key", _apiKey),
                 makePart("url", url)
                                                 )
-        
-        call.enqueue(object : Callback<SaucenaoResponse>
-                     {
-                         override fun onResponse(call : Call<SaucenaoResponse>, response : Response<SaucenaoResponse>)
-                         {
-                             if (response.isSuccessful)
-                             {
-                                 val body = response.body()
-                                 if (body != null)
-                                 {
-                                     val ans = getAns(body.results!!)
-                                     ansFuture.complete(ans)
-                                 }
-                             }
-                         }
-            
-                         override fun onFailure(call : Call<SaucenaoResponse>, t : Throwable)
-                         {
-                             ansFuture.completeExceptionally(t)
-                         }
-                     }
-        
-                    )
-        return ansFuture.get()
+    
+    
+        val ans = getCallBack(call)
+        if (ans.startsWith("success "))
+        {
+            if (_outputType == 2)
+            {
+                val response = Gson().fromJson(ans.substring(8), SaucenaoResponse::class.java)
+                return getAns(response.results!!)
+            }
+            return ans
+        }
+        throw Exception(ans.substring(6))
     }
     
     @Throws(IOException::class)
-    fun search(file : File) : SaucenaoResult
+    fun search(file : File) : Any
     {
-        val ansFuture = CompletableFuture<SaucenaoResult>()
         if (_apiKey == "")
         {
             throw IOException("缺少api key")
         }
-        var retrofit = Retrofit.Builder()
-            .baseUrl("https://saucenao.com")
-            .addConverterFactory(GsonConverterFactory.create())
-        if (_useProxy)
-        {
-            val proxy = Proxy(Proxy.Type.HTTP, InetSocketAddress(_proxyUrl, _port))
-            val client : OkHttpClient = OkHttpClient.Builder()
-                .proxy(proxy)
-                .build()
-            retrofit = retrofit.client(client)
-        }
         
-        val request = retrofit.build()
-            .create(SaucenaoInterface::class.java)
-        
+        val request = getRequest()
         
         val call = request.saucenaoSearchWithFile(
                 makePart("testmode", _testMode),
@@ -256,29 +217,56 @@ class Saucenao
                 makePart("api_key", _apiKey),
                 makePart("file", file)
                                                  )
-        call.enqueue(object : Callback<SaucenaoResponse>
+        
+        val ans = getCallBack(call)
+        if (ans.startsWith("success "))
+        {
+            if (_outputType == 2)
+            {
+                val response = Gson().fromJson(ans.substring(8), SaucenaoResponse::class.java)
+                return getAns(response.results!!)
+            }
+            return ans
+        }
+        throw Exception(ans.substring(6))
+    }
+    
+    private fun getRequest() : SaucenaoInterface
+    {
+        var retrofit = Retrofit.Builder().baseUrl("https://saucenao.com")
+                .addConverterFactory(GsonConverterFactory.create()) //设置数据解析器
+        if (_useProxy)
+        {
+            val proxy = Proxy(Proxy.Type.HTTP, InetSocketAddress(_proxyUrl, _port))
+            val client : OkHttpClient = OkHttpClient.Builder().proxy(proxy).build()
+            retrofit = retrofit.client(client)
+        }
+        
+        val request = retrofit.build().create(SaucenaoInterface::class.java)
+        return request
+    }
+    
+    private fun getCallBack(call : Call<ResponseBody>) : String
+    {
+        val ansFuture = CompletableFuture<String>()
+        call.enqueue(object : Callback<ResponseBody>
                      {
-                         override fun onResponse(call : Call<SaucenaoResponse>, response : Response<SaucenaoResponse>)
+                         override fun onResponse(call : Call<ResponseBody>, response : Response<ResponseBody>)
                          {
                              if (response.isSuccessful)
                              {
-                                 val body = response.body()
-                                 if (body != null)
-                                 {
-                                     val ans = getAns(body.results!!)
-                                     ansFuture.complete(ans)
-                                 }
+                                 val ans = response.body()!!.string()
+                                 ansFuture.complete("success $ans")
                              }
                          }
             
-                         override fun onFailure(call : Call<SaucenaoResponse>, t : Throwable)
+                         override fun onFailure(call : Call<ResponseBody>, t : Throwable)
                          {
-                             ansFuture.completeExceptionally(t)
+                             ansFuture.complete("wrong " + t.message)
                          }
                      }
-        
                     )
-        return ansFuture.get()
+        return ansFuture.get()!!
     }
     
     private fun getAns(items : List<SaucenaoResponse.SaucenaoItem>) : SaucenaoResult
