@@ -1,7 +1,13 @@
 package top.banned.library.imagesearch
 
+import okhttp3.OkHttpClient
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import top.banned.library.imagesearch.tracemoe.TracemoeInterface
 import java.io.File
 import java.io.IOException
+import java.net.InetSocketAddress
+import java.net.Proxy
 
 class Tracemoe
 {
@@ -67,4 +73,21 @@ class Tracemoe
     {
     
     }
+    
+    
+    private fun getRequest() : TracemoeInterface
+    {
+        var retrofit = Retrofit.Builder().baseUrl("https://api.trace.moe")
+                .addConverterFactory(GsonConverterFactory.create()) //设置数据解析器
+        if (_useProxy)
+        {
+            val proxy = Proxy(Proxy.Type.HTTP, InetSocketAddress(_proxyUrl, _port))
+            val client : OkHttpClient = OkHttpClient.Builder().proxy(proxy).build()
+            retrofit = retrofit.client(client)
+        }
+        
+        val request = retrofit.build().create(TracemoeInterface::class.java)
+        return request
+    }
+    
 }

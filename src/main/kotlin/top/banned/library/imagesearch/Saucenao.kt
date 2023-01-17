@@ -241,9 +241,8 @@ class Saucenao
             val client : OkHttpClient = OkHttpClient.Builder().proxy(proxy).build()
             retrofit = retrofit.client(client)
         }
-        
-        val request = retrofit.build().create(SaucenaoInterface::class.java)
-        return request
+    
+        return retrofit.build().create(SaucenaoInterface::class.java)
     }
     
     private fun getCallBack(call : Call<ResponseBody>) : String
